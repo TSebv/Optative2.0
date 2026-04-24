@@ -1,0 +1,13 @@
+{% extends "tienda/base.html" %}
+{% block title %}Eliminar:{{ cliente.nombre }}{% endblock %}
+
+{% block content %}
+<h1>Eliminar cliente</h1>
+<p>¿Está seguro de querer eliminar <strong>{{ cliente.nombre }}</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn primary">Sí, eliminar</button>
+    <a href="{% url 'tienda:detalle_cliente' cliente.pk %}" class="btn delete">Cancelar</a>
+</form>
+{% endblock %}
