@@ -3,6 +3,8 @@ from django.db import transaction
 from django.db.models import Sum, F
 from .models import Producto, Pedido, Cliente
 from .forms import ProductoForm, ClienteForm, PedidoSimpleForm, PedidoItemFormSet
+from django.views.decorators.http import require_GET
+from core.ia.buscador import buscar_productos
 
 '''
 Vista de inicio
@@ -205,3 +207,12 @@ def eliminar_cliente(request, pk):
         return redirect("tienda:lista_clientes")
     
     return render(request, "tienda/eliminar_cliente.html", {"cliente": cliente})
+
+@require_GET
+def buscar_view(request):
+    q = request.GET.get("q", "")
+    resultados = buscar_productos(q, k=5) if q else []
+    return render(request, "tienda/buscar.html", {
+        "q": q,
+        "resultados": resultados,
+        })
